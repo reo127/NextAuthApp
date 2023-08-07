@@ -3,16 +3,30 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 export default function LoginPage() {
+    const router = useRouter();
     const [user, setUser] = useState({
         email: "",
         password: "",
     })
 
     const onLogin = async () => {
-
+        try {
+           const res = await axios.post( "/api/user/login", user)
+           if(res){
+               console.log("Login success...", res.data);
+               toast.success("Login Success")
+                router.push("/")
+           }else{
+            console.log("some problem with api");
+           }
+        } catch (error:any) {
+            console.log(error.message);
+            toast.error(error.message)
+        }
     }
 
 
@@ -42,7 +56,7 @@ export default function LoginPage() {
                     </div>
                     <div className="space-y-2">
                         <div>
-                            <button type="button" className="w-full px-8 py-3 font-semibold rounded-md dark:bg-indigo-400 dark:text-gray-900">Sign In</button>
+                            <button type="button" className="w-full px-8 py-3 font-semibold rounded-md dark:bg-indigo-400 dark:text-gray-900" onClick={onLogin}>Sign In</button>
                         </div>
                         <p className="px-6 text-sm text-center dark:text-gray-400">Don't have an account yet?
                             <Link rel="noopener noreferrer" href="/signup" className="hover:underline dark:text-indigo-400"> Sign Up</Link>.

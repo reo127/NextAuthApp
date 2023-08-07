@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 export async function connect() {
     try {
         mongoose.connect("mongodb+srv://rohan:kankimagi@cluster0.ecwot4i.mongodb.net/nextauth?retryWrites=true&w=majority");

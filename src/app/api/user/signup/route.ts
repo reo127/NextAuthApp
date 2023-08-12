@@ -1,4 +1,5 @@
 import { connect } from "@/dbConfig/dbConfig";
+import { sendMail } from "@/helper/mailer";
 import User from "@/models/userModels";
 import bcryptjs from 'bcryptjs';
 import { NextRequest, NextResponse } from "next/server";
@@ -29,6 +30,9 @@ export async function POST(request: NextRequest) {
         console.log(user);
 
         if (user) {
+            // send email
+            await sendMail({email, emailType: "VERIFY", userId: user._id})
+
             return NextResponse.json({ msg: "User created..", user })
         }
         return NextResponse.json({ error: "User not created..." }, { status: 400 })
